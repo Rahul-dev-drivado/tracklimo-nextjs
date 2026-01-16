@@ -33,10 +33,12 @@ import { SubmitButton } from "./submit-button";
 import { InputTextField } from "./input-text-field";
 import { InputPasswordField } from "./input-password-field";
 import { InputCheckboxField } from "./input-checkbox-field";
+import { ForgotPasswordButton } from "./forgot-password-button";
 
 type LoginFormProps = React.ComponentProps<"div">;
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
+  const [isPending, startTransition] = React.useTransition();
   const router = useRouter();
 
   const form = useForm<LoginForm>({
@@ -64,7 +66,9 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
       );
 
       toast.success("Authenticated");
-      router.push(`/${linkFactory.dashboardLinks.bookings.all().join("/")}`);
+      startTransition(async () => {
+        router.push(`/${linkFactory.dashboardLinks.bookings.all().join("/")}`);
+      });
     } catch (error: unknown) {
       if (error instanceof ReactQueryError) {
         toast.error(error.message);
@@ -114,24 +118,17 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
               <div className="mt-4 space-y-(--gap)">
                 <InputCheckboxField name="consent" control={form.control} />
-                <SubmitButton />
+                <SubmitButton isLoading={isPending} />
               </div>
 
-              <Button asChild className="text-center text-sm">
-                <Link
-                  href={`/${linkFactory.authLinks.forgotPassword.all().join("/")}`}
-                  className="bg-transparent text-sm tracking-wider text-white hover:bg-transparent hover:underline"
-                >
-                  Forgot Password?
-                </Link>
-              </Button>
+              <ForgotPasswordButton />
             </div>
           </form>
         </Form>
 
-        <p className="mt-4 text-xs text-gray-300 md:mt-8">
+        {/* <p className="mt-4 text-xs text-gray-300 md:mt-8">
           © Copyright 2024. Tracklimo Pvt Ltd. All rights reserved
-        </p>
+        </p> */}
       </CardContent>
     </Card>
   );

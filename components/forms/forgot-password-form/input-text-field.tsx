@@ -1,6 +1,6 @@
 import { CircleAlert } from "lucide-react";
 import { Control, FieldPath } from "react-hook-form";
-import type { LoginForm } from "./schema";
+import type { ForgotPasswordForm } from "./schema";
 import {
   FormControl,
   FormField,
@@ -13,8 +13,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type InputTextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  control: Control<LoginForm>;
-  name: Exclude<FieldPath<LoginForm>, "consent" | "password">;
+  control: Control<ForgotPasswordForm>;
+  name: FieldPath<ForgotPasswordForm>;
 };
 
 export function InputTextField(props: InputTextFieldProps) {

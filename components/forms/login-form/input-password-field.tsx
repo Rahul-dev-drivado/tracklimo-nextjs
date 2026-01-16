@@ -88,7 +88,7 @@ export function InputPasswordField(props: InputPasswordFieldProps) {
             </FormControl>
           </div>
 
-          <FormMessage className="text-xs" />
+          <FormMessage className="text-xs text-red-400" />
         </FormItem>
       )}
     />

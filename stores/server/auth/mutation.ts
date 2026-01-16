@@ -19,3 +19,8 @@ export const affiliateLogoutMutationOptions = () =>
       return data;
     },
   });
+
+export const requestAffiliatePasswordChangeMutationOptions = () =>
+  mutationOptions({
+    mutationFn: server.auth.requestAffiliatePasswordChange,
+  });

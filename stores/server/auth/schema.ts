@@ -14,6 +14,11 @@ export const nLoginSchema = loginSchema.transform((d) => ({
   companyId: d.companyid,
 }));
 
+// FORGOT_PASSWORD SCHEMA
+export const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
 // AFFILIATE SCHEMAS
 const affiliateSchema = z.object({
   _id: z.string(),
@@ -65,8 +70,14 @@ const affiliateDetailsResponseSchema = z.object({
 export const nAffiliateDetailsResponseSchema =
   affiliateDetailsResponseSchema.transform((d) => ({ ...d.affiliateDetails }));
 
+// FORGOT_PASSWORD_RESPONSE SCHEMA
+export const forgotPasswordResponseSchema = z.object({
+  message: z.string(),
+});
+
 // SERVER_AUTH_ERROR_RESPONSE SCHEMAS
 const errorSchema = z.object({ message: z.string() });
 export const loginErrorSchema = errorSchema;
 export const logoutErrorSchema = errorSchema;
 export const affiliateDetailsErrorSchema = errorSchema;
+export const forgotPasswordErrorSchema = errorSchema;

@@ -9,6 +9,8 @@ import {
   loginErrorSchema,
   logoutErrorSchema,
   affiliateDetailsErrorSchema,
+  forgotPasswordErrorSchema,
+  forgotPasswordResponseSchema,
 } from "./schema";
 
 import type {
@@ -16,6 +18,8 @@ import type {
   LoginResponse,
   LogoutResponse,
   AffiliateDetailsResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
 } from "./types";
 
 export const auth = {
@@ -157,6 +161,54 @@ export const auth = {
 
     // Step 4: validating the integrity of the incoming data
     const validatedData = nLogoutResponseSchema.safeParse(data);
+
+    // Step 5: throwing error if the format of the incoming data is not appropriate
+    if (!validatedData.success) {
+      throw new ReactQueryError({ message: "server error" });
+    }
+
+    // Step 6: Returning success message
+    return validatedData.data;
+  },
+  requestAffiliatePasswordChange: async (
+    body: ForgotPasswordRequest,
+  ): Promise<ForgotPasswordResponse> => {
+    // Step 0: Creating the Endpoint
+    const URL = `${getEnvDrivadoBackendURL()}/api/${API_VERSION_V1}/affiliates/forgotPassword`;
+
+    // Step 1: Try to reset link
+    const response = await fetch(URL, {
+      method: "POST",
+      cache: "no-store",
+      credentials: "include",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Step 2: parsing the incoming JSON
+    const data: unknown = await response.json();
+
+    // Step 3: handling status 400 and 500 situation
+    if (!response.ok) {
+      const validatedError = forgotPasswordErrorSchema.safeParse(data);
+
+      if (validatedError.success) {
+        throw new ReactQueryError({
+          message: validatedError.data.message,
+          status: response.status,
+        });
+      }
+
+      throw new ReactQueryError({
+        message: "error occur resetting the password",
+        status: response.status,
+      });
+    }
+
+    // Step 4: validating the integrity of the incoming data
+    const validatedData = forgotPasswordResponseSchema.safeParse(data);
 
     // Step 5: throwing error if the format of the incoming data is not appropriate
     if (!validatedData.success) {
