@@ -1,4 +1,4 @@
-// Note: Error Class and Type for React Query
+// Note: Error Utility Class or Type for React Query
 type ReactQueryErrorProps = { message: string; status?: number };
 
 export class ReactQueryError extends Error {
