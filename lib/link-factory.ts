@@ -26,16 +26,22 @@ const dashboardLinks = {
   },
 };
 
-const termsAndConditionsLinks = {
-  all: () => ["terms-and-conditions"],
-};
-
 const privacyPolicyLinks = {
   all: () => ["privacy-policy"],
 };
 
+const resetPasswordLinks = {
+  // all: () => [...authLinks.all(), "resetpassword"], // Not a page yet
+  withToken: ({ token }: { token: string }) => ["resetpassword", token],
+};
+
+const termsAndConditionsLinks = {
+  all: () => ["terms-and-conditions"],
+};
+
 export const linkFactory = {
   authLinks,
+  resetPasswordLinks,
   dashboardLinks,
   static: {
     termsAndConditionsLinks,
